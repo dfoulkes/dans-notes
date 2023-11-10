@@ -15,8 +15,10 @@
     </toc-element>
     <toc-element topic="AWS-Management.md"/>
     <toc-element topic="Home-Auotmation.md">
-        <toc-element topic="K3S-Cluster.md"/>
-        <toc-element topic="Pi-Hole.md"/>
+        <toc-element topic="K3S-Cluster.md">
+            <toc-element topic="Setting-Up-K3S-in-High-Availability.md"/>
+            <toc-element topic="Pi-Hole.md"/>
+        </toc-element>
         <toc-element topic="Scheduled-Jobs.md">
             <toc-element topic="Deadman-Switch.md"/>
             <toc-element topic="Config-Backups.md"/>
