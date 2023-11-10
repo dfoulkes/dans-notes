@@ -48,7 +48,7 @@ sudo apt install nginx
 <step>
 Update the file <code>/etc/nginx/nginx.conf</code> to the following
 </step>
-```bash
+```nginx
 stream {
   server {
     listen 6443;
