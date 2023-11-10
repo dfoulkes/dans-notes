@@ -55,8 +55,8 @@ stream {
   }
 
 upstream stream_master_nodes {
-server <IP of Node 1>:6443;
-server <IP of Node 2>:6443;
+server IP_of_Node_1:6443;
+server IP_of_Node_2:6443;
 }
 }
 </code-block>
