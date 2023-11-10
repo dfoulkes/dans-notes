@@ -22,7 +22,7 @@ Replace ```10.0.0.0``` with the home network address range.
 </procedure>
 
 <procedure title="Create a user for K3s on the SQL Database">
-<code-block>
+<code-block lang="sql">
 CREATE DATABASE homelab;
 CREATE USER 'k8s' IDENTIFIED BY 'password'
 GRANT ALL PRIVILEGES ON *.* TO 'k8s'@'10.0.0.0/255.255.255.0';
@@ -31,7 +31,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'k8s'@'10.0.0.0/255.255.255.0';
 
 <procedure title="Install K3S Running as Master on Two Nodes">
 <step>For each master node, run the following
-<code-block>
+<code-block lang="bash">
 curl -sfL https://get.k3s.io | sh -s - server --datastore-endpoint="mysql://k8s:k8s_password@tcp(SQL_DB_IP:3306)/homelab"
 </code-block>
 </step>
@@ -40,14 +40,14 @@ curl -sfL https://get.k3s.io | sh -s - server --datastore-endpoint="mysql://k8s:
 
 <procedure title="Configure Nginx to load balance between the two instances.">
 <step>Install Nginx
-<code-block>
+<code-block lang="bash">
 sudo apt install nginx
 </code-block>
 </step>
 
 <step>
 Update the file <code>/etc/nginx/nginx.conf</code> to the following
-<code-block>
+<code-block lang="nginx">
 stream {
   server {
     listen 6443;
