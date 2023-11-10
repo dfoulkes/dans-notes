@@ -47,7 +47,9 @@ sudo apt install nginx
 
 <step>
 Update the file <code>/etc/nginx/nginx.conf</code> to the following
-<code-block lang="nginx">
+</step>
+</procedure>
+```bash
 stream {
   server {
     listen 6443;
@@ -59,9 +61,7 @@ server IP_of_Node_1:6443;
 server IP_of_Node_2:6443;
 }
 }
-</code-block>
-</step>
-</procedure>
+```
 
 <procedure title="Install K3S Running as Worker on Two Nodes">
 <step>For each worker node, run the following
