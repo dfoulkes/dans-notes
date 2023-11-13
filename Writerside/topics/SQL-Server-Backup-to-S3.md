@@ -66,8 +66,8 @@ rm $tar_file
 
 The S3 bucket is configured to expire files after 30 days.
 
-## Bucket Policy
-```json
+## Lifecycle Policy
 
+Delete Objects that are older than 30 days
 
-```
+<img src="aws_s3_lifecycle_policy_sql_ bucket.png" alt="Lifecycle policy"/>
