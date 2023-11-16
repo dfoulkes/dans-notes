@@ -1,28 +1,8 @@
-# Pi Hole 
-
-## System Overview
-
-## Packages
-
-located on WSL under `~/source/pi-cluster/pihole`
-
-## Build
-
-| Package Name | Artifact Name | Deployment Type |
-|--------------|---------------|-----------------|
-| pihole       | pihole        | Helm            |
-
-<note> Pipeline location </note>
-
-
-## Source Code
-
-* [GitHub dfoulkes/pihole-kubernetes](https://github.com/dfoulkes/pihole-kubernetes) 
-## Configuration
+# Pi Hole Configuration
 
 Changes to the values.yaml file are network specific. The following changes are required:
 
-### White List Domains
+## White List Domains
 ```yaml
 
   whitelist:
@@ -47,4 +27,3 @@ Changes to the values.yaml file are network specific. The following changes are 
     - address=/work.domain.cloud/10.1.1.15
 
 ```
-

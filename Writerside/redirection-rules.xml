@@ -10,4 +10,8 @@
         <description>Created after removal of "Dan's Dev Diary" from Dans Dev Diary</description>
         <accepts>common-scripts.html</accepts>
     </rule>
+    <rule id="6832ae0">
+        <description>Created after removal of "AWS Management" from Dans Dev Diary</description>
+        <accepts>AWS-Management.html</accepts>
+    </rule>
 </rules>
