@@ -1,0 +1,3 @@
+# Random PC Notes
+
+Start typing here...
