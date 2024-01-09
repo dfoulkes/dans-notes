@@ -12,6 +12,11 @@ Extract the SSL certificate from the chain, use the following command:
 openssl s_client -connect $DOMAIN:$PORT < /dev/null 2>/dev/null | openssl x509 -outform PEM >/etc/ssl/mycert.pem
 ```
 
+---
+
+## CentOs 
+
+
 <procedure title="Install a root certificate on CentOS">
 
 <step>
@@ -19,7 +24,7 @@ openssl s_client -connect $DOMAIN:$PORT < /dev/null 2>/dev/null | openssl x509 -
 <p>Extract root certificate from the website</p>
 
 ```bash
-openssl s_client -connect $DOMAIN:$PORT < /dev/null 2>/dev/null | openssl x509 -outform PEM >/etc/ssl/mycert.pem
+sudo openssl s_client -connect $DOMAIN:$PORT < /dev/null 2>/dev/null | openssl x509 -outform PEM >/etc/ssl/mycert.pem
 ```
 
 </step>
@@ -29,8 +34,8 @@ openssl s_client -connect $DOMAIN:$PORT < /dev/null 2>/dev/null | openssl x509 -
 <p>install ca-certificates and update the ca-trust</p>
 
 ```bash
-yum install -y ca-certificates
-update-ca-trust force-enable
+sudo yum install -y ca-certificates
+sudo update-ca-trust force-enable
 ```
 
 </step>
