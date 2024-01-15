@@ -8,6 +8,11 @@
 
     <toc-element topic="Overview.md"/>
     <toc-element topic="Devops.md">
+        <toc-element topic="AWS.md">
+            <toc-element topic="Setting-Up-AppStream-2.md">
+                <toc-element topic="Using-Image-Builder.md"/>
+            </toc-element>
+        </toc-element>
         <toc-element topic="Release-Patterns.md">
             <toc-element topic="Circuit-Breaker.md"/>
         </toc-element>
@@ -17,10 +22,13 @@
     </toc-element>
     <toc-element topic="Common-Scipts.md">
         <toc-element topic="Linux.md">
+            <toc-element topic="Ubuntu.md">
+            </toc-element>
             <toc-element topic="Find-Availabe-Diskspace.md"/>
             <toc-element topic="Resizing-Promox-Ubuntu-Instance.md"/>
         </toc-element>
         <toc-element topic="OpenSSL-Commands.md">
+            <toc-element topic="Cache-Management.md"/>
             <toc-element topic="OpenSSL-Common-Commands.md"/>
             <toc-element topic="CentOs.md"/>
             <toc-element topic="Java.md"/>
