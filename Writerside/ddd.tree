@@ -8,6 +8,10 @@
 
     <toc-element topic="Overview.md"/>
     <toc-element topic="Devops.md">
+        <toc-element topic="Jira.md">
+            <toc-element topic="Common-Scripts.md"/>
+        </toc-element>
+        <toc-element topic="Lets-Encrypt.md"/>
         <toc-element topic="AWS.md">
             <toc-element topic="Setting-Up-AppStream-2.md">
                 <toc-element topic="Using-Image-Builder.md"/>
