@@ -5,11 +5,26 @@
     <variables></variables>
     <build-profile instance="hi">
         <variables></variables>
+        <footer>
+            <social type="blog" href="https://blog.foulkes.cloud"></social>
+            <social type="twitter" href="https://twitter.com/foulkesd"></social>
+            <social type="facebook" href="https://www.facebook.com/dan.foulkes.3/"></social>
+            <copyright>©2024 Dan Foulkes</copyright>
+        </footer>
     </build-profile>
-    <build-profile instance="cs">
+    <build-profile instance="ddd">
         <variables>
             <noindex-content>true</noindex-content>
+            <algolia-id>K0D1AM812B</algolia-id>
+            <algolia-index>docs_index</algolia-index>
+            <algolia-api-key>af1a68436b412146917acebbfaf91db1</algolia-api-key>
+            <web-root>https://docs.foulkes.cloud</web-root>
         </variables>
+        <footer>
+            <social type="blog" href="https://blog.foulkes.cloud"></social>
+            <social type="twitter" href="https://twitter.com/foulkesd"></social>
+            <social type="facebook" href="https://www.facebook.com/dan.foulkes.3/"></social>
+            <copyright>©2024 Dan Foulkes</copyright>
+        </footer>
     </build-profile>
-
 </buildprofiles>
