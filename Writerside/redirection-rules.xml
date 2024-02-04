@@ -14,4 +14,9 @@
         <description>Created after removal of "AWS Management" from Dans Dev Diary</description>
         <accepts>AWS-Management.html</accepts>
     </rule>
+    <rule id="6d95d262">
+        <description>Created after removal of "Cluster Recovery Check DNS Configuration" from Dans Dev Diary
+        </description>
+        <accepts>Check-DNS-Config.html</accepts>
+    </rule>
 </rules>
