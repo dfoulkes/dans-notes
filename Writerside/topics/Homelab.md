@@ -1,3 +1,0 @@
-# Homelab
-
-Start typing here...

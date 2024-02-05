@@ -19,4 +19,8 @@
         </description>
         <accepts>Check-DNS-Config.html</accepts>
     </rule>
+    <rule id="3cdeff98">
+        <description>Created after removal of "Homelab" from Dans Dev Diary</description>
+        <accepts>Homelab.html</accepts>
+    </rule>
 </rules>

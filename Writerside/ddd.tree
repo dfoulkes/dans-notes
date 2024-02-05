@@ -6,10 +6,6 @@
                  name="Dans Dev Diary"
                  start-page="Overview.md">
 
-    <toc-element topic="Homelab.md">
-        <toc-element topic="Cluster-Recovery-Check-DNS-Configuration.md"/>
-        <toc-element topic="Recovering-From-a-Power-Outage.md"/>
-    </toc-element>
     <toc-element topic="Overview.md"/>
     <toc-element topic="Devops.md">
         <toc-element topic="Jira.md">
@@ -43,6 +39,10 @@
         </toc-element>
     </toc-element>
     <toc-element topic="Home-Auotmation.md">
+        <toc-element topic="How-Tos.md">
+            <toc-element topic="Recovering-From-a-Power-Outage.md"/>
+            <toc-element topic="Cluster-Recovery-Check-DNS-Configuration.md"/>
+        </toc-element>
         <toc-element topic="K3S-Cluster.md">
             <toc-element topic="Master-SQL-Server.md">
                 <toc-element topic="SQL-Server-Backup-to-S31.md"/>
