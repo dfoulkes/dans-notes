@@ -12,6 +12,7 @@
   env:
     INSTANCE: 'Writerside/ddd'
     ARTIFACT: 'webHelpDDD2-all.zip'
+    ALGOLIA_ARTIFACT: 'algolia-indexes-DDD.zip'
     DOCKER_VERSION: '241.15989'
     ALGOLIA_APP_NAME: 'K0D1AM812B'
     ALGOLIA_INDEX_NAME: 'docs_index'
@@ -40,6 +41,7 @@
             path: |
               artifacts/${{ env.ARTIFACT }}
               artifacts/report.json
+              artifacts/${{ env.ALGOLIA_ARTIFACT }}
             retention-days: 7
     test:
       needs: build
@@ -100,12 +102,11 @@
             name: docs
         - name: Unzip artifact
           run: |
-            unzip -O UTF-8 -qq '${{ env.ARTIFACT }}' -d algolia-indexes
+            unzip -O UTF-8 -qq '${{ env.ALGOLIA_ARTIFACT  }}' -d algolia-indexes
             env algolia-key='${{secrets.ALGOLIA_KEY}}' java -jar /opt/builder/help-publication-agent.jar \
             update-index \
             --application-name '${{env.ALGOLIA_APP_NAME}}' \
             --index-name '${{env.ALGOLIA_INDEX_NAME}}' \
             --product '${{env.CONFIG_JSON_PRODUCT}}' \
             --version '${{env.CONFIG_JSON_VERSION}}' \
-            --index-directory algolia-indexes/ \
-            2>&1 | tee algolia-update-index-log.txt
+            --index-directory algolia-indexes
