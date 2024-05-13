@@ -13,7 +13,10 @@
     INSTANCE: 'Writerside/ddd'
     ARTIFACT: 'webHelpHI2-all.zip'
     DOCKER_VERSION: '241.15989'
-
+    ALGOLIA_APP_NAME: 'K0D1AM812B'
+    ALGOLIA_INDEX_NAME: 'docs_index_query_suggestions'
+    CONFIG_JSON_PRODUCT: 'ddd'
+    CONFIG_JSON_VERSION: '2.0'
   jobs:
     build:
       runs-on: ubuntu-latest
@@ -65,7 +68,7 @@
             name: docs
 
         - name: Unzip artifact
-          run: unzip -O UTF-8 -qq '${{ env.ARTIFACT }}' -d dir
+          run: unzip -O UTF-8 -qq 'artifacts/${{ env.ARTIFACT }}' -d dir
 
         - name: Setup Pages
           uses: actions/configure-pages@v4
@@ -91,7 +94,7 @@
             name: docs
         - name: Unzip artifact
           run: |
-            unzip -O UTF-8 -qq '${{ env.ALGOLIA_ARTIFACT }}' -d algolia-indexes
+            unzip -O UTF-8 -qq 'artifacts/${{ env.ALGOLIA_ARTIFACT }}' -d algolia-indexes
             env algolia-key='${{env.ALGOLIA_KEY}}' java -jar /opt/builder/help-publication-agent.jar \
             update-index \
             --application-name '${{env.ALGOLIA_APP_NAME}}' \
