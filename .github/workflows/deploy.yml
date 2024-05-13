@@ -68,6 +68,9 @@
             name: docs
             path: artifacts
 
+        - name: List artifacts directory
+          run: ls -la artifacts
+
         - name: Unzip artifact
           run: unzip -O UTF-8 -qq 'artifacts/${{ env.ARTIFACT }}' -d dir
 
