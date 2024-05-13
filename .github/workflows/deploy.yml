@@ -14,7 +14,7 @@
     ARTIFACT: 'webHelpDDD2-all.zip'
     DOCKER_VERSION: '241.15989'
     ALGOLIA_APP_NAME: 'K0D1AM812B'
-    ALGOLIA_INDEX_NAME: 'docs_index_query_suggestions'
+    ALGOLIA_INDEX_NAME: 'docs_index'
     CONFIG_JSON_PRODUCT: 'ddd'
     CONFIG_JSON_VERSION: '2.0'
   jobs:
