@@ -17,9 +17,11 @@ However, accesses this will then be able to contact the financial
 institutions and execute the will.
 
 ### How to do it
+<warning>
+Before removing the USB stick, please ensure that the router is <b>OFF</b>.
+If you don't, then you will risk data corruption.
+</warning>
 
-Before removing the USB stick, please ensure that the router is off.
-Not doing this will risk data corruption.
 
 Once the USB stick is removed, please insert it into a computer and
 copy the contents to the local drive. This at leasts protects against
