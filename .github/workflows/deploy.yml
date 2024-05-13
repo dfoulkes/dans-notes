@@ -88,7 +88,7 @@
           id: deployment
           uses: actions/deploy-pages@v4
 
-    x:
+    publish-to-algolia:
       needs: [ build, test, deploy ]
       runs-on: ubuntu-latest
       container:
