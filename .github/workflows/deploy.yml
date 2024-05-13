@@ -88,7 +88,7 @@
           id: deployment
           uses: actions/deploy-pages@v4
 
-    publish-indexes:
+    x:
       needs: [ build, test, deploy ]
       runs-on: ubuntu-latest
       container:
@@ -101,7 +101,7 @@
         - name: Unzip artifact
           run: |
             unzip -O UTF-8 -qq '${{ env.ARTIFACT }}' -d algolia-indexes
-            env algolia-key='${{env.ALGOLIA_KEY}}' java -jar /opt/builder/help-publication-agent.jar \
+            env algolia-key='${{secrets.ALGOLIA_KEY}}' java -jar /opt/builder/help-publication-agent.jar \
             update-index \
             --application-name '${{env.ALGOLIA_APP_NAME}}' \
             --index-name '${{env.ALGOLIA_INDEX_NAME}}' \
