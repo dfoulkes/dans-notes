@@ -59,4 +59,43 @@ sudo certbot renew --dns-cloudflare -v --dns-cloudflare-credentials ~/.secrets/c
 Assumption is that the Nginx site is already configured under /etc/nginx/conf.d/site-name.conf
 </warning>
 
+
+## Order a new Certificate
 ```bash
+sudo certbot certonly --dns-cloudflare --dns-cloudflare-credentials /root/.secrets/certbot/cloudflare.ini -d my.domain
+```
+```bash
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Requesting a certificate for my.domain
+Waiting 10 seconds for DNS changes to propagate
+
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/my.domain/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/my.domain/privkey.pem
+This certificate expires on 2024-09-07.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+```
+
+## Edit the Nginx Configuration
+
+Now add the newly generated certificate to the Nginx configuration file.
+
+under `/etc/nginx/conf.d/my.domain.conf` add the following lines:
+```nginx
+server {
+    listen 443 ssl;
+    server_name torrent.foulkes.cloud;
+
+    ssl_certificate /etc/letsencrypt/live/my.domain/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/my.domain/privkey.pem;
+
+    location / {
+        proxy_pass http://localhost:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+
