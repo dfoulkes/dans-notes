@@ -57,6 +57,7 @@
         </toc-element>
     </toc-element>
     <toc-element topic="Random-PC-Notes.md">
+        <toc-element topic="Asus-XG-C100C-v2-Rev-3.md"/>
         <toc-element topic="X670E-PRO-wifi-Motherboard.md"/>
     </toc-element>
     <toc-element topic="Scheduled-Jobs.md">
