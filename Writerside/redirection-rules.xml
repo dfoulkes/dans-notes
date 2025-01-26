@@ -23,4 +23,12 @@
         <description>Created after removal of "Homelab" from Dans Dev Diary</description>
         <accepts>Homelab.html</accepts>
     </rule>
+    <rule id="c739bff">
+        <description>Created after removal of "K3S" from Dans Dev Diary</description>
+        <accepts>K3S.html</accepts>
+    </rule>
+    <rule id="781f8b83">
+        <description>Created after removal of "HAV-Setup" from Dans Dev Diary</description>
+        <accepts>HAV-Setup.html</accepts>
+    </rule>
 </rules>

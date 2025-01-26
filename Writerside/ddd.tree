@@ -47,6 +47,11 @@
             <toc-element topic="Automating-Dynamic-IP-Update-to-Cloudflare-Using-Kubernetes.md"/>
         </toc-element>
         <toc-element topic="K3S-Cluster.md">
+            <toc-element topic="Cluster-Setup.md"/>
+            <toc-element topic="Helmfile.md"/>
+            <toc-element topic="CertManager.md">
+                <toc-element topic="Setup-Cert-Manager-With-K3S.md"/>
+            </toc-element>
             <toc-element topic="Master-SQL-Server.md">
                 <toc-element topic="SQL-Server-Backup-to-S31.md"/>
             </toc-element>
