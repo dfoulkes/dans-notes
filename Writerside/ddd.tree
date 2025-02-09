@@ -46,6 +46,9 @@
             <toc-element topic="Cluster-Recovery-Check-DNS-Configuration.md"/>
             <toc-element topic="Automating-Dynamic-IP-Update-to-Cloudflare-Using-Kubernetes.md"/>
         </toc-element>
+        <toc-element topic="Home-Assistant.md">
+            <toc-element topic="Upgrade-Home-Assistant-Python-Version-3-13-0.md"/>
+        </toc-element>
         <toc-element topic="K3S-Cluster.md">
             <toc-element topic="Cluster-Setup.md"/>
             <toc-element topic="Helmfile.md"/>
