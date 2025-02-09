@@ -147,7 +147,6 @@ pip install --use-deprecated=legacy-resolver cryptography==42.0.0
 pip3 install --upgrade homeassistant
 pip install mysqlclient
 pip install mysql-connector-python
-
 </code-block>
 </step>
 
@@ -155,21 +154,11 @@ pip install mysql-connector-python
 <p>Update the Home Assistant runtime in the Systemd service</p>
 <code-block lang="bash">
 sudo nvim /etc/systemd/system/home-assistant\@homeassistant.service
-
-[Unit]
-Description=Home Assistant
-After=network.target
-
-[Service]
-Type=simple
-User=homeassistant
-WorkingDirectory=/srv/homeassistant/
-ExecStart=/srv/homeassistant/bin/python3.13 -m homeassistant --config /home/homeassistant/.homeassistant
-Restart=on-failure
-
-[Install]
-WantedBy=multi-user.target
 </code-block>
+<p>Change  the execution line runtime to python3.13:</p>
+<code>
+ExecStart=/srv/homeassistant/bin/python3.13 -m homeassistant --config /home/homeassistant/.homeassistant
+</code>
 </step>
 
 <step>
