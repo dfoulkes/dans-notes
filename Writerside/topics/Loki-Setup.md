@@ -13,6 +13,29 @@
 By default Loki requires a `X-Scope-OrgID` header to be set in the request. This is to prevent unauthorized access to the logs.
 </warning>
 
+<procedure>
+<step>
+install Loki via Helm
+<code-block lang="bash">
+helm install loki grafana/loki -f microservices-values.yaml -n monitoring
+</code-block>
+</step>
+<step>
+verify the deployment with:
+<code-block lang="bash">
+kubectl get pods -n monitoring
+</code-block>
+<img src="loki-installed-pods.png" alt=""/>
+</step>
+<step>
+Get the link for Grafana from the helm output once it's finished
+<img src="loki-helm-output.png" alt=""/>
+
+http://loki-gateway.monitoring.svc.cluster.local
+</step>
+</procedure>
+
+
 <procedure title="Configure Grafana">
 <step>
 Go to Data Sources in Grafana
