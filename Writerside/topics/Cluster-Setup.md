@@ -1,5 +1,20 @@
 # Cluster Setup
 
+<warning>
+<title>Warning</title>
+Read below when a fresh install of Raspbian is done.
+
+</warning>
+
+## Pre-requisites
+
+### Configuring cgroups
+```bash
+sudo nano /boot/firmware/cmdline.txt
+```
+append the following to the end of the file:
+`cgroup_memory=1 cgroup_enable=memory`
+
 
 ## Master Nodes
 
@@ -18,6 +33,11 @@ If you want to setup a master node with a custom label, you can use the followin
 curl -sfL https://get.k3s.io | sh -s - server --token="<k3s_token>" --datastore-endpoint="mysql://<mysql_usere>:<my_sql_password>@tcp(<my_sql_ip>:3306)/homelab" --tls-san=<nginx_ip> --node-label="prometheus=true"
 ```
 
+<warning>
+<title>Important</title>
+for new nodes, ensure all the longhorn prerequisites are met.
+<a href="https://longhorn.io/docs/1.8.0/deploy/install/">Installation Requirements</a>
+</warning>
 
 ## Agent Nodes
 Setting up each agent node with:
