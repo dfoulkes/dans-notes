@@ -51,6 +51,35 @@ curl -sfL https://get.k3s.io | sh -s - agent --token="<k3s_token>" --server http
  MySQL password stored in 1Password
 </note>
 
+<tip>
+if running on a Pi, run the follow after installing Raspberian
+
+raspi-config --expand-rootfs
+
+</tip>
+
+## Other Settings
+
+### Increase the number of open files
+add the following to `/etc/security/limits.conf`
+```bash
+*               soft    nofile          100000
+*               hard    nofile          100000
+```
+edit the following file: `/etc/pam.d/common-session` adding the following before end of the file.
+
+```bash
+session required        pam_unix.so
+```
+
+edit `/etc/pam.d/common-session-noninteractive` and add the following line to the end of the file:
+```bash
+session required        pam_unix.so
+```
+<note>
+on my last Rasbian install, this was already in place.
+</note>
+
 
 ## Common Commands
 
