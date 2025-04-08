@@ -4,7 +4,7 @@
 ## Getting the status of zpool
 
 
-<code-block lang="Bash">
+```
 zpool status
 
 
@@ -37,7 +37,7 @@ config:
             b057666d-7581-4bfe-bfdc-c36e01ebc8be  ONLINE       0     0     0
             79f45321-0375-49eb-845b-e4c221e4776c  ONLINE       0     0     0
 
-</code-block>
+```
 
 When a drive is `Faulted` it means that the drive is not responding to the system. This can be due to a number of reasons, including:
 - The drive has failed
