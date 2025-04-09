@@ -74,8 +74,35 @@ Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA
 <step>
 <p>Now that we have the device id, we need to turn off the system.
 Once booted down, physically remove the drive from the system.
-Replace the drive with a new one and boot the system back up.
+now reboot the system.
 </p>
+</step>
+<step>
+<p>run sudo zpool status again and it should look something like this:</p>
+<code-block>
+  pool: home_pool
+ state: DEGRADED
+status: One or more devices could not be used because the label is missing or
+        invalid.  Sufficient replicas exist for the pool to continue
+        functioning in a degraded state.
+action: Replace the device using 'zpool replace'.
+   see: https://openzfs.github.io/openzfs-docs/msg/ZFS-8000-4J
+  scan: resilvered 1.16T in 03:11:33 with 0 errors on Wed Apr  9 11:52:05 2025
+config:
+        NAME                                      STATE     READ WRITE CKSUM
+        home_pool                                 DEGRADED     0     0     0
+          raidz2-0                                DEGRADED     0     0     0
+            5eecca48-960f-41e7-8ada-f7009268da3a  ONLINE       0     0     0
+            5139747264624222703                   UNAVAIL      0     0     0  was /dev/disk/by-partuuid/40055ce3-3420-432b-9340-ed725bcd90f4
+            b057666d-7581-4bfe-bfdc-c36e01ebc8be  ONLINE       0     0     0
+            79f45321-0375-49eb-845b-e4c221e4776c  ONLINE       0     0     0
+        cache
+          7de8a6d7-6aeb-4075-9c6a-4471b66c193c    ONLINE       0     0     0
+</code-block>
+<p>Capture the ID of the unavailable disk, (its at the end of the line) ex: 40055ce3-3420-432b-9340-ed725bcd90f4 </p>
+</step>
+<step>
+Now shutdown the system again and insert the new drive.
 </step>
 <step>
 <p>Once the system is back up, check the status of the zpool again.</p>
@@ -92,5 +119,6 @@ zpool replace home_pool 40055ce3-3420-432b-9340-ed725bcd90f4 sdd
 <p>Where `home_pool` is the name of the pool, `40055ce3-3420-432b-9340-ed725bcd90f4` is the ID of the old disk, and `sdd` is the name of the new disk.</p>
 </step>
 </procedure>
+
 
 
