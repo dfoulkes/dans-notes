@@ -36,7 +36,7 @@
 After applying the solution, verify the issue is resolved by:
 1. load a guests link, forcing the app to make a database call.
 2. in explorer in grafana run the following query:
-   ```sql
+   ```
    count(rate({service_name="rsvp-backend"} |= `has a collation version mismatch` [$__auto]))
    ```
    and verify the count is 0.
