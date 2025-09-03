@@ -32,6 +32,10 @@
     ALTER DATABASE dev_db REFRESH COLLATION VERSION;
     REINDEX DATABASE dev_db;
     ```
+   For the application in order to make the errors stop, We need to restart the pods in the K3S cluster.
+   To do this, from `k9s` find the `rsvp-backend` under `deployments` click `e` to edit and set the `replicas` to `0`, then after it was done scaling down set the `replicas` back to `3`.
+   
+
 ## Verification
 After applying the solution, verify the issue is resolved by:
 1. load a guests link, forcing the app to make a database call.
