@@ -31,4 +31,8 @@
         <description>Created after removal of "HAV-Setup" from Dans Dev Diary</description>
         <accepts>HAV-Setup.html</accepts>
     </rule>
+    <rule id="42eabdfd">
+        <description>Created after removal of "Databases" from Dans Dev Diary</description>
+        <accepts>Databases.html</accepts>
+    </rule>
 </rules>
