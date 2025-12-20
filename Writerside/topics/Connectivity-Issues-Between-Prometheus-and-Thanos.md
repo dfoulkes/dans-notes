@@ -28,7 +28,7 @@ The error message indicates that Thanos Query is unable to connect to the Promet
 
 ### Tested Solution
 
-_<procedure>
+<procedure>
 <step number="1" title="Verify Network Connectivity">
 Rerun the rollout of the statefulset for Prometheus to re-establish the connection.
 <code-block language="bash">
