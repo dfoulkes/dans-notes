@@ -96,6 +96,9 @@
         </toc-element>
     </toc-element>
     <toc-element topic="Troubleshooting.md">
+        <toc-element topic="PC.md">
+            <toc-element topic="Booting-Issues-with-Samsung-T7.md"/>
+        </toc-element>
         <toc-element topic="Prometheus-Trobleshooting.md">
             <toc-element topic="Connectivity-Issues-Between-Prometheus-and-Thanos.md"/>
         </toc-element>

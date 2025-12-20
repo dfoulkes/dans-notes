@@ -35,4 +35,8 @@
         <description>Created after removal of "Databases" from Dans Dev Diary</description>
         <accepts>Databases.html</accepts>
     </rule>
+    <rule id="2ee07be6">
+        <description>Created after removal of "T7 Bootable Issues" from Dans Dev Diary</description>
+        <accepts>T7-Bootable-Issues.html</accepts>
+    </rule>
 </rules>
