@@ -5,10 +5,13 @@ This document covers the steps that I took in creating a
 backup image of the T7 which hosts the Arch Linux installation.
 
 
+
+## Backup Procedure
+
 <procedure title="Backup T7 from Windows WSL2">
 <step number="1" title="mounting the T7 in WSL2">
 First, ensure that the Samsung T7 is connected to the Windows host machine.
-from a admin PowerShell window run the following:
+from an admin PowerShell window run the following:
 <code-block language="powershell">
 wsl --mount \\.\PHYSICALDRIVE3 --bare
 </code-block>
@@ -53,3 +56,7 @@ In this example, the end `zst` compressed image will be stored on the NAS.
 </note>
 </step>
 </procedure>
+
+## Restore Procedure
+
+<note>TODO</note>
