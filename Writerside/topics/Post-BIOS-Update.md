@@ -61,3 +61,4 @@ Restart the network service to apply the changes:
 ## Related Incident Topics
 - [Guide to setting up secureboot](Secureboot.md)
 - [Asus XG-C100C v2 Rev 3](Asus-XG-C100C-v2-Rev-3.md)
+- [Booting Issues with Samsung T7](Booting-Issues-with-Samsung-T7.md)
