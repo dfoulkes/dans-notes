@@ -94,6 +94,11 @@
                 <toc-element topic="Collation-Version-Mismatch.md"/>
             </toc-element>
         </toc-element>
+        <toc-element topic="Arch-Linux.md">
+            <toc-element topic="Boot-Issues.md">
+                <toc-element topic="Post-BIOS-Update.md"/>
+            </toc-element>
+        </toc-element>
     </toc-element>
     <toc-element topic="Troubleshooting.md">
         <toc-element topic="PC.md">

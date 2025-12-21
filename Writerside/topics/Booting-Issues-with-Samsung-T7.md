@@ -1,7 +1,7 @@
 # Booting Issues with Samsung T7
 
 <tip>
-<b>Status: Under Investigation</b>
+<b>Status: Resolved</b>
 </tip>
 
 ## Overview
@@ -93,3 +93,24 @@ detects the T7 (seems to work 1 out of 3 attempts).
 
 - [ASUS PRIME X670E-PRO WIFI Support](https://www.asus.com/motherboards-components/motherboards/prime/prime-x670e-pro-wifi/helpdesk_bios/)
 - [Samsung T7 Specifications](https://www.samsung.com/semiconductor/minisite/ssd/product/portable/t7/)
+
+
+## Update 2025-12-21
+
+Following a series of other issues derived from the BIOS update, I noticed that the T7 seemed to be stugging on
+`U32G2_20` port, where the disk would show intermittent connectivity issues. I moved the T7 to the `U32G2_4` port 
+and since then it has been stable further testing is required though. 
+
+<note>
+This could be a power delivery issue on the `U32G2_20` port or
+a timing issue as previously suspected. But it does seem to of been introduced in 3287 i.e. AGESA updated to ComboAM5 PI 1.2.7.0
+</note>
+
+The second issue I found was not related to the BIOS. Since Windows 11 and Arch Linux boot from the Linux EFI partition on the T7,
+I found that Windows updates were modifying the EFI boot entries and thus systemd-boot was being ignored. So when the drive did
+start to function again, it was masked by Windows automatically loading instead of seeing the systemd-boot menu.
+
+<warning>
+Action!!: When booting into Windows, we should hand over to it's EFI drive instead of the T7 to avoid Windows updates modifying the EFI boot entries on the T7 and 
+killing systemd-boot visibility.
+</warning>
