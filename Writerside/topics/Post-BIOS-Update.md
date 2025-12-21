@@ -1,8 +1,6 @@
 # Post BIOS Update
 
-<tip>
-This document came about due to the multiple issues I had with restoring my Arch after upgrading my BIOS.
-</tip>
+> **Note:** This document came about due to the multiple issues I had with restoring my Arch after upgrading my BIOS.
 
 ## Overview
 
@@ -13,48 +11,56 @@ This document came about due to the multiple issues I had with restoring my Arch
 
 ## Fixes
 
+### Ethernet Card ID Change Fix
 
-<procedure title="Ethernet Card ID Change Fix">
-<tip> The most obvious issue here is you won't have an internet / network connection.</tip>
-<step number="1" title="Check networkctl">
+> **Note:** The most obvious issue here is you won't have an internet / network connection.
+
+#### Step 1: Check networkctl
+
 Check the status of the network interfaces using:
-<code-block language="bash">
-    networkctl list
- </code-block> 
+
+```bash
+networkctl list
+```
+
 Which might look something like this:
-<code-block language="bash">
+
+```bash
 IDX LINK     TYPE     OPERATIONAL SETUP     
   1 lo       loopback carrier     unmanaged
   2 eno1     ether    off         unmanaged
   4 wlp101s0 wlan     off         unmanaged
   5 enp99s0  ether    degraded    unmanaged
-</code-block>
-<tip> the clue here, is the `degraded`</tip> 
+```
+
+> **Note:** The clue here, is the `degraded`
+
 Capture the name of the device that is degraded, in this case `enp99s0`.
-</step>
-<step number="2" title="verify it has the same IDX as in /etc/systemd/network/20-wired.network">
-open in an editor:
-<path>
-    /etc/systemd/network/20-wired.network
-</path> this should look something like:   
-<code-block language="ini">
+
+#### Step 2: Verify it has the same IDX as in /etc/systemd/network/20-wired.network
+
+Open in an editor: `/etc/systemd/network/20-wired.network`
+
+This should look something like:
+
+```ini
 [Match]
 # Name=enp10s0
 Name=enp99s0
 
 [Network]
 DHCP=yes
-</code-block>
+```
 
-if `Name=` is different from the IDX captured in step 1, update it to match.
-</step>
-<step number="3" title="Restart systemd-networkd">
+If `Name=` is different from the IDX captured in step 1, update it to match.
+
+#### Step 3: Restart systemd-networkd
+
 Restart the network service to apply the changes:
-<code-block language="bash">
-    sudo systemctl restart systemd-networkd
-</code-block>
-</step>
-</procedure>
+
+```bash
+sudo systemctl restart systemd-networkd
+```
 
 
 
