@@ -96,6 +96,9 @@
             </toc-element>
         </toc-element>
         <toc-element topic="Arch-Linux.md">
+            <toc-element topic="Linux-HouseKeeping.md">
+                <toc-element topic="Arch-Backup-Image.md"/>
+            </toc-element>
             <toc-element topic="Boot-Issues.md">
                 <toc-element topic="Post-BIOS-Update.md"/>
             </toc-element>
