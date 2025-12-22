@@ -3,10 +3,11 @@
 
 ## Securing Arch Linux on External USB with LUKS & TPM2
 
-This guide documents the conversion of an existing Arch Linux installation on an external Samsung T7 SSD to a fully encrypted setup with Secure Boot and TPM2 auto-unlocking.
+This guide covers the steps to take to configure a encrypted root drive in Arch Linux using LUKS and TPM2.
 
 WHY? Being a remote storage device it could be very prone to theft or loss, so encrypting the drive ensures that even if the physical device is compromised, the data remains secure.
 adding the TPM2 auto-unlock feature enhances usability by allowing the system to boot without manual password entry when connected to the enrolled TPM2 chip with Secure Boot enabled.
+
 ## Prerequisites
 - Existing Arch Linux installation on an external USB drive (e.g., Samsung T7).
 - Arch Linux Live ISO for recovery and setup.
