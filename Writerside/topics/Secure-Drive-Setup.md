@@ -5,6 +5,8 @@
 
 This guide documents the conversion of an existing Arch Linux installation on an external Samsung T7 SSD to a fully encrypted setup with Secure Boot and TPM2 auto-unlocking.
 
+WHY? Being a remote storage device it could be very prone to theft or loss, so encrypting the drive ensures that even if the physical device is compromised, the data remains secure.
+adding the TPM2 auto-unlock feature enhances usability by allowing the system to boot without manual password entry when connected to the enrolled TPM2 chip with Secure Boot enabled.
 ## Prerequisites
 - Existing Arch Linux installation on an external USB drive (e.g., Samsung T7).
 - Arch Linux Live ISO for recovery and setup.
@@ -14,11 +16,44 @@ This guide documents the conversion of an existing Arch Linux installation on an
 ## Backup & Encryption
 
 <procedure title="Phase 1: Backup and Encryption" id="phase-1-encryption">
+    <warning>
+    This script makes assumptions that your drive only has two partitions: an EFI partition (e.g., /dev/sdb1) and a root partition (e.g., /dev/sdb2). If the drive has multiple partitions for example 
+a dedicated SWAP partition, it's recommended that you flatten the drive to have only two partitions before proceeding. This document does not
+    cover multi-partition setups. 
+</warning>
     <step>
         <p>Boot into the Arch Linux Live ISO.</p>
     </step>
     <step>
-        <p>Create a backup of the existing system (if not already done) using <code>rsync</code> to a separate drive.</p>
+        <p>Create a backup of the existing system using <code>rsync</code> to a separate drive.</p>
+        <note>
+            <p>Mount your backup destination drive first (e.g., <code>mount /dev/sdX /mnt/backup</code>).</p>
+        </note>
+        <code-block lang="bash">
+            sudo rsync -aAXHvx --info=progress2 \
+              --exclude={"/dev/*","/proc/*","/sys/*","/tmp/*","/run/*","/mnt/*","/media/*","/lost+found"} \
+              / /mnt/backup/arch_backup/
+        </code-block>
+        <p><b>Flag Explanations:</b></p>
+        <list>
+            <li><code>-a</code> (archive mode): Preserves permissions, ownership, timestamps, and recursively copies directories</li>
+            <li><code>-A</code>: Preserves Access Control Lists (ACLs)</li>
+            <li><code>-X</code>: Preserves extended attributes (xattrs)</li>
+            <li><code>-H</code>: Preserves hard links</li>
+            <li><code>-v</code>: Verbose output to see what's being copied</li>
+            <li><code>-x</code>: Don't cross filesystem boundaries (stays on the source filesystem)</li>
+            <li><code>--info=progress2</code>: Shows overall progress with transfer speed and time remaining</li>
+        </list>
+        <p><b>Exclusions Explained:</b></p>
+        <list>
+            <li><code>/dev/*</code>, <code>/proc/*</code>, <code>/sys/*</code>: Virtual filesystems managed by the kernel</li>
+            <li><code>/tmp/*</code>, <code>/run/*</code>: Temporary runtime files</li>
+            <li><code>/mnt/*</code>, <code>/media/*</code>: Mount points (prevents copying the backup destination into itself)</li>
+            <li><code>/lost+found</code>: Filesystem recovery directory</li>
+        </list>
+        <warning>
+            <p>This backup can take significant time depending on your system size. Ensure you have enough space on the backup drive.</p>
+        </warning>
     </step>
     <step>
         <p>Identify the target partition (Root) and formatted it with LUKS2 encryption.</p>
@@ -47,8 +82,11 @@ This guide documents the conversion of an existing Arch Linux installation on an
     <step>
         <p>Restore the system backup to the new encrypted partition.</p>
         <code-block lang="bash">
-            rsync -aAXv /path/to/backup/ /mnt/ --exclude=/path/to/backup
+            sudo rsync -aAXHv --info=progress2 /mnt/backup/arch_backup/ /mnt/
         </code-block>
+        <note>
+            <p>Ensure the trailing slash on the source path (<code>/mnt/backup/arch_backup/</code>) to copy the contents, not the directory itself. The restore uses fewer flags because we're copying to an empty destination and don't need to worry about crossing filesystems.</p>
+        </note>
     </step>
 </procedure>
 
@@ -100,6 +138,10 @@ This guide documents the conversion of an existing Arch Linux installation on an
             initrd  /initramfs-linux.img
             options rd.luks.name=YOUR-UUID-HERE=cryptroot root=/dev/mapper/cryptroot rw rootwait
         </code-block>
+    To get YOUR-UUID run the following command (replace /dev/sdb2 with your root partition):
+    <code-block lang="bash">
+        blkid /dev/sdb2
+    </code-block>
     </step>
     <step>
         <p>Exit chroot and reboot to test the password prompt.</p>
