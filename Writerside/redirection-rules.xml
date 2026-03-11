@@ -39,4 +39,8 @@
         <description>Created after removal of "T7 Bootable Issues" from Dans Dev Diary</description>
         <accepts>T7-Bootable-Issues.html</accepts>
     </rule>
+    <rule id="47f97c7">
+        <description>Created after removal of "Proxmox Management" from Dans Dev Diary</description>
+        <accepts>Proxmox-Management.html</accepts>
+    </rule>
 </rules>

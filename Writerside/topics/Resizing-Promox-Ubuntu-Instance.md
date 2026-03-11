@@ -36,5 +36,55 @@ sudo fdisk -l /dev/sda
 <procedure title="Expand Disk Space on Ubuntu Server">
 <warning>This is only for Ubuntu Desktop NOT server</warning>
 <step>ssh onto the VM</step>
-<step>TODO</step>
+<step>
+Identify the root partition, and the partition number.
+<code xml:lang="bash">
+superman@homeassistant:~$ lsblk
+NAME                      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
+loop0                       7:0    0   74M  1 loop /snap/core22/2339
+loop2                       7:2    0 63.8M  1 loop /snap/core20/2686
+loop3                       7:3    0   74M  1 loop /snap/core22/2292
+loop4                       7:4    0   71M  1 loop /snap/prometheus/86
+loop5                       7:5    0 50.9M  1 loop /snap/snapd/25577
+loop6                       7:6    0 48.1M  1 loop /snap/snapd/25935
+loop7                       7:7    0 63.8M  1 loop /snap/core20/2717
+sda                         8:0    0   45G  0 disk 
+├─sda1                      8:1    0    1M  0 part 
+├─sda2                      8:2    0    2G  0 part /boot
+└─sda3                      8:3    0   28G  0 part 
+  └─ubuntu--vg-ubuntu--lv 252:0    0   28G  0 lvm  /
+</code>
+</step>
+<step>
+<code xml:lang="bash">
+sudo apt update
+sudo apt install cloud-guest-utils
+</code>
+</step>
+<step>
+Use growpart to resize the partition, in this case it's partition 3 on /dev/sda
+
+<code xml:lang="bash">
+sudo growpart /dev/sda 3
+</code>
+</step>
+<step>
+now resize the physical volume with pvresize.
+
+<code xml:lang="bash">
+sudo pvresize /dev/sda3
+</code>
+</step>
+<step>
+Now resize the logical volume, in this case it's called ubuntu-lv
+<code xml:lang="bash">
+sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+</code>
+</step>
+<step>
+Now resize the filesystem, in this case it's ext4
+<code xml:lang="bash">
+sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv
+</code>
+</step>
 </procedure>
