@@ -34,7 +34,9 @@ sudo fdisk -l /dev/sda
 
 
 <procedure title="Expand Disk Space on Ubuntu Server">
-<warning>This is only for Ubuntu Desktop NOT server</warning>
+<warning>
+This is ONLY for VMs using LVM, if you're using a standard partition setup, then you can skip the LVM steps and just use growpart and resize2fs to resize the partition and filesystem respectively.
+</warning>
 <step>ssh onto the VM</step>
 <step>
 Identify the root partition, and the partition number.
