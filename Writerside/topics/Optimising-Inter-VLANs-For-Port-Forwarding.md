@@ -88,13 +88,13 @@ Open PowerShell as Administrator.
 </step>
 <step>
 Identify your physical adapter name:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Get-NetAdapter | Where-Object { $_.Virtual -eq $false }
 </code-block>
 </step>
 <step>
 Create an external virtual switch bound to the physical adapter:
-<code-block lang="powershell">
+<code-block lang="ps1">
 New-VMSwitch -Name "PhysicalBridge" `
   -NetAdapterName "10G Nic" `
   -AllowManagementOS $true
@@ -102,7 +102,7 @@ New-VMSwitch -Name "PhysicalBridge" `
 </step>
 <step>
 Create a host virtual adapter for Geek VLAN traffic:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Add-VMNetworkAdapter -ManagementOS `
   -Name "Geek-VLAN" `
   -SwitchName "PhysicalBridge"
@@ -110,7 +110,7 @@ Add-VMNetworkAdapter -ManagementOS `
 </step>
 <step>
 Apply VLAN tagging to the new adapter:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Set-VMNetworkAdapterVlan -ManagementOS `
   -VMNetworkAdapterName "Geek-VLAN" `
   -Access -VlanId 5
@@ -151,7 +151,7 @@ No gateway on the tagged adapter ensures only Geek subnet traffic uses this path
 <procedure title="Validate routing behavior and expected outcomes">
 <step>
 Confirm the tagged adapter exists and has the expected IPv4:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Get-NetIPAddress `
   -InterfaceAlias "vEthernet (Geek-VLAN)" `
   -AddressFamily IPv4
@@ -159,14 +159,14 @@ Get-NetIPAddress `
 </step>
 <step>
 Confirm route preference for NAS subnet:
-<code-block lang="powershell">
+<code-block lang="ps1">
 route print
 </code-block>
 <p>Verify the NAS subnet route points to `vEthernet (Geek-VLAN)`.</p>
 </step>
 <step>
 Test local NAS reachability:
-<code-block lang="powershell">
+<code-block lang="ps1">
 ping 192.168.55.14
 </code-block>
 </step>
@@ -183,13 +183,13 @@ Validate gaming/internet path still uses the primary interface and NAT returns t
 <procedure title="Return to pre-change state">
 <step>
 Remove VLAN-tagged host adapter:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Remove-VMNetworkAdapter -ManagementOS -Name "Geek-VLAN"
 </code-block>
 </step>
 <step>
 If needed, remove external switch:
-<code-block lang="powershell">
+<code-block lang="ps1">
 Remove-VMSwitch -Name "PhysicalBridge" -Force
 </code-block>
 </step>
