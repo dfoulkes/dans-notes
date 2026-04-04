@@ -1,21 +1,38 @@
 # OS-Level VLAN Tagging for Dual-Homed Workstation
 
-## Problem Statement
+## Runbook Goal
 
-Following on from the previous topic of [Inter-VLAN Routing](Inter-VLAN-Routing.md), the next problem I encountered was that while the L3 routing on the switch allowed for high-speed inter-VLAN traffic, 
-it caused issues with external port forwarding and NAT due to [asymmetric routing](https://www.cisco.com/web/services/news/ts_newsletter/tech/chalktalk/archives/200903.html). The UDM SE's firewall would drop returning packets from the L3 switch, 
-breaking UDP hole-punching and resulting in "Moderate" or "Strict" NAT types in games.
+Use one physical PC link to keep:
+- internet and game traffic on the untagged Personal network (via Dream Machine SE), and
+- NAS traffic on a tagged Geek VLAN path at switch speed.
 
-When expanding a home lab to include high-speed 2.5Gbps switches (like the USW Pro Max 16 PoE) behind a 1Gbps router (Dream Machine SE), a conflict arises between high-speed internal routing and external port forwarding (NAT).
+This avoids asymmetric routing side effects from L3 inter-VLAN routing while preserving high-throughput NAS transfers.
 
-If the internal networks are routed via Layer 3 on the switch, inter-VLAN traffic achieves 2.5Gbps. However, this causes asymmetric routing for external traffic. The UDM SE's stateful firewall will often silently drop returning packets from the L3 switch, completely breaking UDP hole-punching and Port Forwarding. This results in "Moderate" or "Strict" NAT types in games like Call of Duty.
+## When to Use This Runbook
 
-Reverting the network routing back to the UDM SE fixes the NAT and Port Forwarding, but creates a 1GBps bottleneck for heavy internal traffic (like PC to NAS file transfers).
+- You previously enabled L3 inter-VLAN routing for performance.
+- Port forwarding or game NAT became unreliable (Moderate/Strict NAT).
+- Your PC and NAS are connected through `USW Pro Max 16 PoE`.
 
-## Solution
-The solution is to bypass Layer 3 routing entirely and use Layer 2 **OS-Level VLAN Tagging**. By creating a "Dual-Homed" configuration on the PC, we can split the physical network cable into two virtual paths:
-1. **Untagged Traffic (Primary):** Routed by the UDM SE. This handles the default gateway, internet access, and gaming traffic, ensuring Port Forwarding works perfectly for an "Open" NAT.
-2. **Tagged Traffic (Secondary):** Tagged with the NAS VLAN ID (e.g., VLAN 5). This creates a direct logical link to the NAS subnet. Because the PC is virtually on the same subnet as the NAS, traffic bypasses the UDM SE firewall entirely and travels across the switch's high-speed ASIC at 2.5Gbps.
+## Prerequisites
+
+- UniFi controller access with permission to edit switch port profiles.
+- Windows PC with Hyper-V available.
+- One physical NIC on the PC connected to `USW Pro Max 16 PoE`.
+- VLAN details for:
+  - Personal network (untagged/native)
+  - Geek network (tagged, example VLAN `5`)
+- NAS subnet details (example `192.168.55.0/24`).
+
+<warning title="Scope">
+This runbook is for host-level VLAN tagging on Windows using Hyper-V virtual adapters. It does not re-enable L3 inter-VLAN routing on the switch.
+</warning>
+
+<warning title="Important Assumption from Previous Article">
+This runbook assumes the <b>Personal</b> VLAN is routed by the <b>Dream Machine SE</b>, not by switch Inter-VLAN routing.
+If Personal is still attached to switch-side Inter-VLAN routing from the previous design, NAT and port-forwarding behavior can break again.
+Review context in <a href="Inter-VLAN-Routing.md">Inter-VLAN Routing</a> before applying these steps.
+</warning>
 
 ## Topology
 
@@ -23,101 +40,167 @@ The solution is to bypass Layer 3 routing entirely and use Layer 2 **OS-Level VL
 flowchart LR
   subgraph Windows PC
     direction TB
-    APP1[Call of Duty / Internet] --> NIC1[Primary NIC\nUntagged]
-    APP2[SMB File Transfer] --> NIC2[Virtual NIC\nVLAN 5 Tagged]
+    APP1[Internet and Gaming] --> NIC1[Primary Path\nUntagged]
+    APP2[SMB File Transfer] --> NIC2[Virtual Path\nVLAN 5 Tagged]
   end
 
   SW[USW Pro Max 16 PoE\nTrunk Port]
 
-  NIC1 -->|Default Gateway\n1Gbps| SW
-  NIC2 -->|Direct Subnet\n2.5Gbps| SW
-  
+  NIC1 -->|Default gateway path| SW
+  NIC2 -->|Geek VLAN subnet path| SW
+
   SW -->|VLAN 5| NAS[NAS]
   SW -->|Untagged| UDM[Dream Machine SE]
   UDM --> IN[Internet]
 ```
 
-## Configuration
+## Execution
 
-### Phase 1: Configuring the Switch Port (Trunking)
+### Phase 1: Configure the Switch Port as Trunk
 
-<warning title="Important Note">
-In the eariler article I mentioned about putting both VLANS on to the Inter-VLAN. During the process of 
-working this out, I moved the `personal` VLAN back under the `Dream Machine SE`. 
-
-This is an important point, as 
-by default in this solution untagged traffic will hit the Dream Machines backplane which caps throughput to 1Gbps
-however, in the solution below any inter-VLAN traffic to Geek will run at max capacity due to how the traffic is routed.
-</warning>
-<procedure title="Enable Tagged Traffic on the PC's Switch Port">
+<procedure title="Allow Personal (native) and Geek (tagged) on the PC port">
 <step>
-Open the <b>UniFi Network</b> application and navigate to <path>UniFi Devices | USW Pro Max 16 PoE</path>.
+Open <b>UniFi Network</b> and navigate to <path>UniFi Devices | USW Pro Max 16 PoE</path>.
 </step>
 <step>
-Go to the Port Manager and click on the port connected to the PC.
+Open <b>Ports</b> (or Port Manager) and select the port connected to the PC.
 </step>
 <step>
-Set the Primary Network (Native VLAN) to the primary network (e.g., Personal Network). This is the untagged network.
+Set the <b>Primary Network</b> (Native VLAN) to <b>Personal</b>.
 </step>
 <step>
-<p>Scroll down to Advanced, set Traffic Restriction to Custom, and ensure the Geek Network (VLAN 5) is checked under Allowed Networks. Apply changes.</p>
-<b>OR</b>
-<p>if you have `Allow All` ticked, then you can just leave this as-is.</p>
+Under advanced VLAN settings, allow <b>Geek Network (VLAN 5)</b> as tagged traffic on that same port.
 </step>
-<note>
-This configures the port as a "Trunk", allowing it to pass the standard Personal Network natively, while silently carrying the Geek Network for devices that know to look for it.
-</note>
+<step>
+Apply changes and wait for the port to reprovision.
+</step>
 </procedure>
 
-Phase 2: Creating the Virtual Bridge in Windows
-<procedure title="Configure Hyper-V Virtual Switch and Tagging">
+<note>
+If the port profile is configured as "Allow All", tagged VLAN 5 is already permitted.
+</note>
+
+### Phase 2: Create the Windows Tagged Interface
+
+<procedure title="Create Hyper-V virtual switch and VLAN-tagged adapter">
 <step>
-Open PowerShell as an Administrator.
+Open PowerShell as Administrator.
 </step>
 <step>
-Identify the exact name of your physical high-speed network adapter by running:
-<code>Get-NetAdapter | Where-Object {$_.Virtual -eq $false}</code>
+Identify your physical adapter name:
+<code-block lang="powershell">
+Get-NetAdapter | Where-Object { $_.Virtual -eq $false }
+</code-block>
 </step>
 <step>
-Create a new External Virtual Switch bound to that physical adapter (e.g., "10G Nic"):
-<code>New-VMSwitch -Name "PhysicalBridge" -NetAdapterName "10G Nic" -AllowManagementOS $true</code>
+Create an external virtual switch bound to the physical adapter:
+<code-block lang="powershell">
+New-VMSwitch -Name "PhysicalBridge" `
+  -NetAdapterName "10G Nic" `
+  -AllowManagementOS $true
+</code-block>
 </step>
 <step>
-Add a new virtual network adapter for the host OS to use for the NAS connection:
-<code>Add-VMNetworkAdapter -ManagementOS -Name "Geek-VLAN" -SwitchName "PhysicalBridge"</code>
+Create a host virtual adapter for Geek VLAN traffic:
+<code-block lang="powershell">
+Add-VMNetworkAdapter -ManagementOS `
+  -Name "Geek-VLAN" `
+  -SwitchName "PhysicalBridge"
+</code-block>
 </step>
 <step>
-Apply the specific VLAN ID (e.g., 5) to this new virtual adapter:
-<code>Set-VMNetworkAdapterVlan -ManagementOS -VMNetworkAdapterName "Geek-VLAN" -Access -VlanId 5</code>
+Apply VLAN tagging to the new adapter:
+<code-block lang="powershell">
+Set-VMNetworkAdapterVlan -ManagementOS `
+  -VMNetworkAdapterName "Geek-VLAN" `
+  -Access -VlanId 5
+</code-block>
 </step>
+</procedure>
+
 <warning>
-Running the <code>New-VMSwitch</code> command will temporarily drop the network connection for a few seconds while Windows rebinds the physical card to the virtual bridge.
+`New-VMSwitch` briefly interrupts connectivity while Windows rebinds the NIC.
 </warning>
+
+### Phase 3: Set IP Without Gateway on Tagged Adapter
+
+<procedure title="Keep NAS path local and avoid default route conflicts">
+<step>
+Open Network Connections (`ncpa.cpl`).
+</step>
+<step>
+Open properties for `vEthernet (Geek-VLAN)`.
+</step>
+<step>
+Configure IPv4 with a static address in the NAS subnet (example `192.168.55.20/24`).
+</step>
+<step>
+Leave <b>Default Gateway</b> and <b>DNS</b> empty on this adapter.
+</step>
+<step>
+Save and close.
+</step>
 </procedure>
 
-Phase 3: IP Configuration and Routing Priority
-<procedure title="Assign Static IP and Prevent Default Gateway Conflicts">
-<step>
-Press <code>Win + R</code>, type <code>ncpa.cpl</code>, and press Enter to open Network Connections.
-</step>
-<step>
-Right-click the newly created vEthernet (Geek-VLAN) adapter and select Properties.
-</step>
-<step>
-Select Internet Protocol Version 4 (TCP/IPv4) and click Properties.
-</step>
-<step>
-Assign a static IP address within the Geek Network subnet (e.g., <code>192.168.X.Y</code>) and the appropriate Subnet Mask.
-</step>
-<step>
-Crucial Step: Leave the Default Gateway and DNS Servers completely blank. Click OK.
-</step>
 <note>
-Leaving the gateway blank forces Windows to use this adapter ONLY for traffic destined for the exact 192.168.55.x subnet. All internet and gaming traffic will naturally fall back to the primary untagged adapter. Windows will display this adapter as an "Unidentified Network", which is expected and normal.
+No gateway on the tagged adapter ensures only Geek subnet traffic uses this path. Internet traffic continues via the untagged Personal path.
 </note>
+
+## Verification
+
+<procedure title="Validate routing behavior and expected outcomes">
+<step>
+Confirm the tagged adapter exists and has the expected IPv4:
+<code-block lang="powershell">
+Get-NetIPAddress `
+  -InterfaceAlias "vEthernet (Geek-VLAN)" `
+  -AddressFamily IPv4
+</code-block>
+</step>
+<step>
+Confirm route preference for NAS subnet:
+<code-block lang="powershell">
+route print
+</code-block>
+<p>Verify the NAS subnet route points to `vEthernet (Geek-VLAN)`.</p>
+</step>
+<step>
+Test local NAS reachability:
+<code-block lang="powershell">
+ping 192.168.55.14
+</code-block>
+</step>
+<step>
+Run a file transfer test to NAS and confirm high throughput (target similar to prior baseline, e.g. `~1.8Gbps+` in your environment).
+</step>
+<step>
+Validate gaming/internet path still uses the primary interface and NAT returns to Open where expected.
+</step>
 </procedure>
 
-## Result
-Traffic directed to the internet or game servers uses the primary IP, routes through the Dream Machine SE, and correctly establishes an Open NAT via port forwarding.
+## Rollback
 
-Conversely, when the PC requests data from the NAS at 192.168.55.14, the OS routing table recognizes the localized Geek-VLAN interface. It tags the packets with VLAN 5 and sends them directly to the switch, avoiding the firewall entirely and sustaining continuous 1.8Gbps+ transfer speeds.
+<procedure title="Return to pre-change state">
+<step>
+Remove VLAN-tagged host adapter:
+<code-block lang="powershell">
+Remove-VMNetworkAdapter -ManagementOS -Name "Geek-VLAN"
+</code-block>
+</step>
+<step>
+If needed, remove external switch:
+<code-block lang="powershell">
+Remove-VMSwitch -Name "PhysicalBridge" -Force
+</code-block>
+</step>
+<step>
+Restore original UniFi port profile for the PC port.
+</step>
+</procedure>
+
+## Troubleshooting
+
+- `No NAS connectivity`: confirm VLAN 5 is allowed on switch port and tagged adapter VLAN ID is `5`.
+- `Internet breaks after switch creation`: wait for NIC rebind, then verify primary adapter default gateway.
+- `Traffic still hairpins through router`: check Geek adapter has no default gateway and correct subnet mask.
+- `NAT still Moderate/Strict`: confirm game/device port forwarding is mapped to the primary untagged Personal IP.
