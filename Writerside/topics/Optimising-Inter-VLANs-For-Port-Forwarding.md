@@ -31,7 +31,7 @@ This runbook is for host-level VLAN tagging on Windows using Hyper-V virtual ada
 <warning title="Important Assumption from Previous Article">
 This runbook assumes the <b>Personal</b> VLAN is routed by the <b>Dream Machine SE</b>, NOT by switch Inter-VLAN routing.
 If Personal is still attached to switch-side Inter-VLAN routing from the previous runbook <a href="Inter-VLAN-Routing.md">Inter-VLAN Routing</a>, NAT and port-forwarding behavior can break again.
-Review context in  before applying these steps.
+Review context before applying these steps.
 </warning>
 
 ## Topology
