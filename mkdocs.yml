@@ -1,0 +1,26 @@
+site_name: Dan's Technical Documentation
+site_description: Runbooks, guides, and technical documentation for foulkes.cloud infrastructure
+site_author: Dan Foulkes
+repo_url: https://github.com/dfoulkes/dans-notes
+
+nav:
+  - Home: index.md
+  - Runbooks:
+    - Infrastructure:
+      - Monitoring Namespace Recovery: runbooks/infrastructure/monitoring-namespace-recovery.md
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: blue
+
+plugins:
+  - search
+  - techdocs-core
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
