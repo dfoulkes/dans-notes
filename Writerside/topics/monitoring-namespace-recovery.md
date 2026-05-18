@@ -3,7 +3,7 @@
 **Service:** monitoring  
 **Tier:** Critical  
 **Last Updated:** 2026-05-18  
-**Incident Reference:** [2026-05-18 Monitoring Namespace Deletion](/home/claw/.obsidian/incidents/2026-05-18-monitoring-namespace-deletion.md)
+**Incident Reference:** 2026-05-18 Monitoring Namespace Deletion
 
 ---
 
@@ -572,15 +572,15 @@ All Helm values and manifests must be in git:
 
 ## Related Runbooks
 
-- [Barn Door Protocol](/home/claw/.openclaw/workspace/skills/barn-door-protocol/SKILL.md) - Powercut recovery
-- [Prometheus Recovery](./prometheus.md) - Prometheus-specific issues
-- [Grafana Recovery](./grafana.md) - Grafana-specific issues
+- Barn Door Protocol - Powercut recovery (see homelab docs)
+- Prometheus Recovery - Prometheus-specific issues
+- Grafana Recovery - Grafana-specific issues
 
 ---
 
 ## Incident History
 
-- **2026-05-18:** Complete namespace deletion during GitOps blog post preparation ([full incident report](/home/claw/.obsidian/incidents/2026-05-18-monitoring-namespace-deletion.md))
+- **2026-05-18:** Complete namespace deletion during GitOps blog post preparation
   - Duration: 1h 51min (04:24 - 06:15 UTC)
   - Data loss: 7 days Prometheus metrics, all Loki logs, 3 days Jaeger traces
   - Recovery: Grafana dashboards fully restored, services operational
