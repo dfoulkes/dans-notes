@@ -90,6 +90,9 @@
         <toc-element topic="Secureboot.md"/>
     </toc-element>
     <toc-element topic="Runbooks.md">
+        <toc-element topic="Infrastructure.md">
+            <toc-element topic="monitoring-namespace-recovery.md"/>
+        </toc-element>
         <toc-element topic="Networking.md">
             <toc-element topic="Optimising-Inter-VLANs-For-Port-Forwarding.md"/>
             <toc-element topic="Inter-VLAN-Routing.md"/>
